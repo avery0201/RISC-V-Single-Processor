@@ -1,0 +1,49 @@
+# Register Initialization
+addi x1, x0, 15      # x1 = 15 (0x0000000F)
+addi x2, x0, -15     # x2 = -15 (0xFFFFFFF1)
+addi x3, x0, 2       # x3 = 2 (shift amount)
+addi x4, x0, 0       # x4 = 0 (base memory)
+
+# 1. sll
+sll x5, x1, x3       # x5 = 15 << 2 = 60 (0x0000003C)
+sw x5, 0(x4)         # RAM[0] = 0x3C
+
+# 2. slli
+slli x6, x1, 3       # x6 = 15 << 3 = 120 (0x00000078)
+sw x6, 4(x4)         # RAM[1] = 0x78
+
+# 3. srl
+srl x7, x1, x3       # x7 = 15 >> 2 = 3 (0x00000003)
+sw x7, 8(x4)         # RAM[2] = 0x03
+
+# 4. srli
+srli x8, x2, 1       # x8 = 0xFFFFFFF1 >> 1 = 0x7FFFFFF8
+sw x8, 12(x4)        # RAM[3] = 0x7FFFFFF8
+
+# 5. sra
+sra x9, x2, x3       # x9 = 0xFFFFFFF1 >>> 2 = -4 (0xFFFFFFFC)
+sw x9, 16(x4)        # RAM[4] = 0xFFFFFFFC
+
+# 6. srai
+srai x10, x2, 1      # x10 = 0xFFFFFFF1 >>> 1 = -8 (0xFFFFFFF8)
+sw x10, 20(x4)       # RAM[5] = 0xFFFFFFF8
+
+# 7. xor
+xor x11, x1, x2      # x11 = 15 ^ -15 = -2 (0xFFFFFFFE)
+sw x11, 24(x4)       # RAM[6] = 0xFFFFFFFE
+
+# 8. xori
+xori x12, x1, -1     # x12 = 15 ^ -1 = -16 (0xFFFFFFF0)
+sw x12, 28(x4)       # RAM[7] = 0xFFFFFFF0
+
+# 9. sltu
+sltu x13, x1, x2     # x13 = (15 < 0xFFFFFFF1) = 1 (0x00000001)
+sw x13, 32(x4)       # RAM[8] = 0x01
+
+# 10. sltiu
+sltiu x14, x2, 15    # x14 = (0xFFFFFFF1 < 15) = 0 (0x00000000)
+sw x14, 36(x4)       # RAM[9] = 0x00
+
+# Loop
+loop:
+beq x0, x0, 0     # Infinite loop to halt execution
